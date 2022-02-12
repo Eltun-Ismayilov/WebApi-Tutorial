@@ -22,10 +22,11 @@ namespace WebApi.Controllers
         [HttpGet("Get")]
         public async Task<IActionResult> Get()
         {
+            //throw new Exception("Salam");
             var allbook = await service.GetAllBook();
             return Ok(allbook);
         }
-        [HttpGet("Id")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Details(int id)
         {
             return Ok(await service.GetBookId(id));

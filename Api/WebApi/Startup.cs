@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using WebApi.Data;
 using WebApi.Data.SeedData;
 using WebApi.Data.Services;
+using WebApi.Exceptions;
 
 namespace WebApi
 {
@@ -57,6 +58,9 @@ namespace WebApi
             app.UseRouting();
 
             app.UseAuthorization();
+
+            //Exception Handling
+            app.ConfigureBuildInExceptionHandler();
 
             app.UseEndpoints(endpoints =>
             {

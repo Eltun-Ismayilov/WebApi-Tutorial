@@ -29,5 +29,6 @@ namespace WebApi.Exceptions
         {
             PublisherName = publisherName;
         }
+
     }
 }

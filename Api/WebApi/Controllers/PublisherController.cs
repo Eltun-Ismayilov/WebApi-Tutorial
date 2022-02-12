@@ -45,6 +45,7 @@ namespace WebApi.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var data= service.Details(id);
+           // throw new Exception("Salam");
 
             return Ok(data);
 

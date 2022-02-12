@@ -28,9 +28,11 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("id")]
-        public IActionResult Create(int id)
+        public IActionResult Details(int id)
         {
-          var author= service.Details(id);
+            //throw new Exception("Salam");
+
+            var author = service.Details(id);
 
             return Ok(author);
         }
