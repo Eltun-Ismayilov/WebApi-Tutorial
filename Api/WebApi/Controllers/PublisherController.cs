@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using WebApi.Data.Services;
 using WebApi.Data.ViewModul;
@@ -18,6 +15,15 @@ namespace WebApi.Controllers
         public PublisherController(PublisherService service)
         {
             this.service = service;
+        }
+
+
+        [HttpGet("Get")]
+        public async Task<IActionResult> Get(string sortBy)
+        {
+            //throw new Exception("Salam");
+            var publishers = await service.Get(sortBy);
+            return Ok(publishers);
         }
 
         [HttpPost("Create")]
@@ -41,7 +47,7 @@ namespace WebApi.Controllers
    
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Details(int id)
         {
             var data= service.Details(id);
@@ -51,7 +57,7 @@ namespace WebApi.Controllers
 
         }
 
-        [HttpDelete("id")]
+        [HttpDelete("{id}")]
 
         public IActionResult Delete(int id)
         {
@@ -67,6 +73,7 @@ namespace WebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
 
 
 
