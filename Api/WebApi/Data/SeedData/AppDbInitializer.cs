@@ -26,7 +26,6 @@ namespace WebApi.Data.SeedData
                         DataRead = DateTime.Now.AddDays(-10),
                         Rate = 4,
                         Genre = "Biography",
-                        Author = "First Author",
                         CoverUrl = "https...",
                         DateAdded = DateTime.Now
 
@@ -37,7 +36,6 @@ namespace WebApi.Data.SeedData
                         Description = "1st Book Description",
                         IsRead = true,
                         Genre = "Biography",
-                        Author = "First Author",
                         CoverUrl = "https...",
                         DateAdded = DateTime.Now
 

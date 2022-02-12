@@ -37,6 +37,9 @@ namespace WebApi
             });
 
             services.AddTransient<BooksService>();
+            services.AddTransient<AuthorsService>();
+            services.AddTransient<PublisherService>();
+
 
         }
 

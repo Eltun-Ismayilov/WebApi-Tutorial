@@ -14,8 +14,16 @@ namespace WebApi.Data.Models
         public DateTime? DataRead { get; set; }
         public int? Rate { get; set; }
         public string Genre { get; set; }
-        public string Author { get; set; }
         public string CoverUrl { get; set; }
         public DateTime DateAdded { get; set; }
+
+        //Navigation Properties
+        public int PublisherId { get; set; }
+        public Publisher Publisher { get; set; }
+
+        //Navigation Properties
+
+        public List<Book_Author> Book_Authors { get; set; }
+
     }
 }

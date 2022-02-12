@@ -15,7 +15,7 @@ namespace WebApi.Data.Services
         {
             this.db = db;
         }
-        public async void AddBook(BookVM book)
+        public  void AddBook(BookVM book)
         {
             var _book = new Book()
             {
@@ -25,19 +25,43 @@ namespace WebApi.Data.Services
                 DataRead = book.IsRead ? book.DataRead.Value : null,
                 Rate = book.Rate,
                 Genre = book.Genre,
-                Author = book.Author,
                 CoverUrl = book.CoverUrl,
-                DateAdded = DateTime.Now
+                DateAdded = DateTime.Now,
+                PublisherId=book.PublisherId
             };
 
             db.Books.Add(_book);
-            await db.SaveChangesAsync();
+            db.SaveChanges();
+
+            foreach (var id in book.AuthorIds)
+            {
+                var book_author = new Book_Author()
+                {
+                    BookId = _book.Id,
+                    AuthorId = id
+                };
+
+                db.Book_Authors.Add(book_author);
+                db.SaveChanges();
+            }
         }
         public async Task<List<Book>> GetAllBook() => await db.Books.ToListAsync();
-        public async Task<Book> GetBookId(int bookId)
+        public async Task<BookAndAuthorVM> GetBookId(int bookId)
         {
 
-            var data = await db.Books.FirstOrDefaultAsync(b => b.Id == bookId);
+            var data =  db.Books.Where(b => b.Id == bookId).Select(book=>new BookAndAuthorVM() {
+
+                Title =book.Title,
+                Description = book.Description,
+                IsRead = book.IsRead,
+                DataRead = book.IsRead ? book.DataRead.Value : null,
+                Rate = book.Rate,
+                Genre = book.Genre,
+                CoverUrl = book.CoverUrl,
+                PublisherName = book.Publisher.Name,
+                AuthorsName = book.Book_Authors.Select(n=>n.Author.FullName).ToList()
+
+            }).FirstOrDefault(); 
 
             if (data==null)
             {
@@ -59,9 +83,13 @@ namespace WebApi.Data.Services
                 data.DataRead = book.IsRead ? book.DataRead.Value : null;
                 data.Rate = book.Rate;
                 data.Genre = book.Genre;
-                data.Author = book.Author;
                 data.CoverUrl = book.CoverUrl;
                 data.DateAdded = DateTime.Now;
+                data.PublisherId = book.PublisherId;
+                //data.Book_Authors.Select(x=>x.AuthorId).ToList()
+                
+
+                    
                 await db.SaveChangesAsync();
             }
             return data;
