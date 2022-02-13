@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 using WebApi.Data.Services;
@@ -12,21 +13,27 @@ namespace WebApi.Controllers
     public class PublisherController : ControllerBase
     {
         readonly PublisherService service;
-        public PublisherController(PublisherService service)
+        private readonly ILogger<PublisherController> logger;
+        public PublisherController(PublisherService service, ILogger<PublisherController> logger)
         {
             this.service = service;
+            this.logger = logger;
         }
-
-
         [HttpGet("Get")]
         public async Task<IActionResult> Get(string sortBy,string search)
         {
-            //throw new Exception("Salam");
-            var publishers = await service.Get(sortBy, search);
-            return Ok(publishers);
+            try
+            {
+                logger.LogInformation("This is just a log in GetAllPubLisher()");
+                var publishers = await service.Get(sortBy, search);
+                return Ok(publishers);
+            }
+            catch (Exception)
+            {
+
+                return BadRequest("Sorry,we could not load the publishers");
+            }
         }
-
-
 
         [HttpPost("Create")]
         public IActionResult AddPublis([FromBody] PublisherVM publisher)
@@ -66,7 +73,7 @@ namespace WebApi.Controllers
 
             try
             {
-                service.delete(id);
+                service.Delete(id);
                 return Ok();
             }
             catch (Exception ex)
@@ -77,7 +84,12 @@ namespace WebApi.Controllers
         }
 
 
-
+        [HttpPut("id")]
+        public async Task<IActionResult> Update(int id, [FromBody] PublisherVM publisher)
+        {
+            var update = await service.Update(id, publisher);
+            return Ok(update);
+        }
 
     }
 }

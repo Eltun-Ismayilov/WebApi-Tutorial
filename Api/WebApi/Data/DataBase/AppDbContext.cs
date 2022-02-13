@@ -19,5 +19,6 @@ namespace WebApi.Data
         public DbSet<Publisher> Publishers { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<Book_Author> Book_Authors { get; set; }
+        public DbSet<Log> Logs { get; set; }
     }
 }

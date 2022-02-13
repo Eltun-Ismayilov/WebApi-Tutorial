@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using WebApi.Data.Models;
+using WebApi.Data.Paging;
 using WebApi.Data.ViewModul;
 using WebApi.Exceptions;
 
@@ -54,7 +55,7 @@ namespace WebApi.Data.Services
             return author;
         }
 
-        public void delete(int id)
+        public void Delete(int id)
         {
             var data = db.Publishers.FirstOrDefault(x => x.Id == id);
 
@@ -85,9 +86,26 @@ namespace WebApi.Data.Services
             {
                 publisher = publisher.Where(n => n.Name.Contains(search,StringComparison.CurrentCultureIgnoreCase)).ToList();
             }
+            //Paging
+            //int pageSize = 5;
+
+            //publisher = PaginatedList<Publisher>.Create(publisher.AsQueryable(), pageNumber ?? 1, pageSize);
+
             return publisher;
         }
 
+
+        public async Task<Publisher> Update(int id, PublisherVM book)
+        {
+            var data = await db.Publishers.FirstOrDefaultAsync(b => b.Id == id);
+
+            if (data != null)
+            {
+                data.Name = book.Name;
+                await db.SaveChangesAsync();
+            }
+            return data;
+        }
 
 
         private bool StringStartsWithNumber(string name) => (Regex.IsMatch(name, @"^\d"));

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -40,5 +41,40 @@ namespace WebApi.Data.Services
             return author;
         }
 
+
+        public async Task Delete(int id)
+        {
+            var data = await db.Authors.FirstOrDefaultAsync(b => b.Id == id);
+            db.Authors.Remove(data);
+            await db.SaveChangesAsync();
+
+        }
+
+        public List<Author> Get()
+        {
+            var data= db.Authors
+                //.Include(x=>x.Book_Authors)
+                //.ThenInclude(x=>x.Book)
+                //.ThenInclude(x=>x.Publisher)
+                .ToList(); 
+            return data;
+        }
+
+        public async Task<Author> Update(int id, AuthorVM author)
+        {
+            var data = await db.Authors.FirstOrDefaultAsync(b => b.Id == id);
+
+            if (data != null)
+            {
+                data.FullName = author.FullName;
+            
+                //data.Book_Authors.Select(x=>x.AuthorId).ToList()
+
+
+
+                await db.SaveChangesAsync();
+            }
+            return data;
+        }
     }
 }
