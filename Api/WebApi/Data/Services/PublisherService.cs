@@ -65,7 +65,7 @@ namespace WebApi.Data.Services
             }
         }
 
-        public async Task<List<Publisher>> Get(string sortBy)
+        public async Task<List<Publisher>> Get(string sortBy,string search)
         {
             var publisher =await db.Publishers.OrderBy(n=>n.Name).ToListAsync();
 
@@ -81,9 +81,11 @@ namespace WebApi.Data.Services
                 }
             }
 
+            if (!string.IsNullOrEmpty(search))
+            {
+                publisher = publisher.Where(n => n.Name.Contains(search,StringComparison.CurrentCultureIgnoreCase)).ToList();
+            }
             return publisher;
-
-
         }
 
 

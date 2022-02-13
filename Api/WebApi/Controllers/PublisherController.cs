@@ -19,12 +19,14 @@ namespace WebApi.Controllers
 
 
         [HttpGet("Get")]
-        public async Task<IActionResult> Get(string sortBy)
+        public async Task<IActionResult> Get(string sortBy,string search)
         {
             //throw new Exception("Salam");
-            var publishers = await service.Get(sortBy);
+            var publishers = await service.Get(sortBy, search);
             return Ok(publishers);
         }
+
+
 
         [HttpPost("Create")]
         public IActionResult AddPublis([FromBody] PublisherVM publisher)

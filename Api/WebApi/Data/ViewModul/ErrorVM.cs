@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace WebApi.Data.ViewModul
 {
     public class ErrorVM
-    {
+    { 
         public int StatusCode { get; set; }
         public string Message { get; set; }
         public string Path { get; set; }
